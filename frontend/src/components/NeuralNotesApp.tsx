@@ -551,6 +551,8 @@ function NeuralNotesShell() {
         <NeuralTopBar
           currentView={currentView}
           onLogout={handleLogout}
+          isSidebarOpen={isSidebarOpen}
+          onToggleSidebar={() => setIsSidebarOpen((prev) => !prev)}
           t={t}
           locale={locale}
           onChangeLocale={setLocale}

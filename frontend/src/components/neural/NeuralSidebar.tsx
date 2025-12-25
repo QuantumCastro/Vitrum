@@ -75,9 +75,11 @@ export function NeuralSidebar({
     }
   };
 
-  const mobileStateClass = "translate-y-0 opacity-100";
+  const mobileStateClass = isSidebarOpen
+    ? "translate-x-0 opacity-100"
+    : "-translate-x-full opacity-0 pointer-events-none";
   const positionClass = isMobile
-    ? "fixed left-0 top-0 bottom-0 w-[66vw]"
+    ? "fixed left-0 top-0 bottom-0 w-[70vw]"
     : "fixed inset-0";
 
   return (

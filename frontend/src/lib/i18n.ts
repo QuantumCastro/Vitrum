@@ -21,6 +21,7 @@ export type Copy = {
     searchPlaceholder: string;
     newIdea: string;
     importNotes: string;
+    toggle: string;
   };
   editor: {
     loading: string;
@@ -127,6 +128,7 @@ export const translations: Record<Locale, Copy> = {
       searchPlaceholder: "Buscar pensamientos...",
       newIdea: "Nueva idea...",
       importNotes: "Importar notas",
+      toggle: "Notas",
     },
     editor: {
       loading: "Cargando tu bóveda...",
@@ -239,6 +241,7 @@ export const translations: Record<Locale, Copy> = {
       searchPlaceholder: "Search thoughts...",
       newIdea: "New idea...",
       importNotes: "Import notes",
+      toggle: "Notes",
     },
     editor: {
       loading: "Loading your vault...",

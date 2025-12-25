@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 
-import { Moon, Sun } from "lucide-react";
+import { Menu, Moon, Sun } from "lucide-react";
 
 import type { Copy, Locale } from "../../lib/i18n";
 import type { ViewMode } from "./types";
@@ -8,6 +8,8 @@ import type { ViewMode } from "./types";
 type Props = {
   currentView: ViewMode;
   onLogout: () => void;
+  isSidebarOpen: boolean;
+  onToggleSidebar: () => void;
   t: Copy;
   locale: Locale;
   onChangeLocale: (locale: Locale) => void;
@@ -18,6 +20,8 @@ type Props = {
 export function NeuralTopBar({
   currentView,
   onLogout,
+  isSidebarOpen,
+  onToggleSidebar,
   t,
   locale,
   onChangeLocale,
@@ -81,6 +85,19 @@ export function NeuralTopBar({
   return (
     <div className="flex h-16 flex-none items-center justify-between px-6">
       <div className="flex items-center gap-3 overflow-hidden">
+        <button
+          onClick={onToggleSidebar}
+          className={`flex items-center gap-2 rounded-full border px-3 py-1 text-xs font-semibold transition-colors md:hidden ${
+            isSidebarOpen
+              ? "border-violet-400/60 bg-violet-500/20 text-white"
+              : "border-white/10 text-slate-300 hover:border-violet-400/40 hover:text-white"
+          }`}
+          title={t.sidebar.toggle}
+          aria-label={t.sidebar.toggle}
+        >
+          <Menu size={16} />
+          <span className="hidden sm:inline">{t.sidebar.toggle}</span>
+        </button>
         <div className="flex items-center gap-2 text-xs font-mono text-slate-500">
           <span className="opacity-50">/</span>
           <span className="uppercase tracking-wider">{viewLabel}</span>
