@@ -1,14 +1,24 @@
 import Axios, { type AxiosRequestConfig, type AxiosResponse } from "axios";
 
 const resolveBaseUrl = (): string => {
+  // 1. PRIORITY: Variable de entorno de Astro (Producción en Vercel)
+  // Esta es la línea crítica que conecta con tu backend en Fly.io
+  if (import.meta.env.PUBLIC_API_URL) {
+    return import.meta.env.PUBLIC_API_URL;
+  }
+
+  // 2. Runtime injection (opcional, mantengo tu código original)
   if (typeof window !== "undefined") {
     const fromWindow = (window as unknown as { __API_BASE_URL?: string }).__API_BASE_URL;
     if (fromWindow) return fromWindow;
   }
+
+  // 3. Legacy Node environment (mantengo tu código original)
   if (typeof process !== "undefined" && process.env.PUBLIC_API_BASE_URL) {
     return process.env.PUBLIC_API_BASE_URL;
   }
-  // Default host for dev; OpenAPI paths already include the /api prefix
+
+  // 4. Default host for dev (fallback)
   return "http://localhost:8000";
 };
 
