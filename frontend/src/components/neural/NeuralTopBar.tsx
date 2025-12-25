@@ -84,7 +84,7 @@ export function NeuralTopBar({
 
   return (
     <div className="flex h-16 flex-none items-center justify-between px-6">
-      <div className="flex items-center gap-3 overflow-hidden">
+      <div className="flex items-center gap-1 overflow-hidden">
         <button
           onClick={onToggleSidebar}
           className={`flex items-center gap-2 rounded-full border px-3 py-1 text-xs font-semibold transition-colors md:hidden ${
