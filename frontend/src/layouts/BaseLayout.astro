@@ -1,0 +1,26 @@
+---
+import "../styles/global.css";
+---
+
+<!doctype html>
+<html lang="es" data-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vitrum</title>
+    <link rel="icon" type="image/svg+xml" href="/vitrum-icon.svg" />
+    <script>
+      const envBaseUrl = import.meta.env.PUBLIC_API_BASE_URL;
+      const devFallback = "http://localhost:8000";
+      const runtimeBaseUrl = window.location.origin;
+
+      // - Dev (Astro dev): backend suele correr en :8000 (sin gateway).
+      // - Prod (Docker + NGINX): usar same-origin y dejar que NGINX proxyee /api/* al backend.
+      (window as any).__API_BASE_URL =
+        envBaseUrl || (import.meta.env.DEV ? devFallback : runtimeBaseUrl);
+    </script>
+  </head>
+  <body class="min-h-screen bg-slate-950 text-slate-100">
+    <slot />
+  </body>
+</html>

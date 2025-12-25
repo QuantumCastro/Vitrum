@@ -1,0 +1,21 @@
+# Build artifacts
+build/
+dist/
+# Front/back
+node_modules/
+frontend/node_modules/
+frontend/dist/
+frontend/.astro/
+backend/.venv/
+backend/.ruff_cache/
+backend/.pytest_cache/
+backend/.mypy_cache/
+backend/__pycache__/
+backend/.env
+backend/*.db
+*.db
+frontend/.env
+.venv
+/.env
+*.tsbuildinfo
+**/.mypy_cache

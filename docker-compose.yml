@@ -1,0 +1,69 @@
+services:
+  db:
+    image: postgres:15-alpine
+    restart: always
+    environment:
+      POSTGRES_USER: app
+      POSTGRES_PASSWORD: app
+      POSTGRES_DB: app
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U app -d app"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+    networks:
+      - app-network
+
+  backend:
+    build:
+      context: . 
+      dockerfile: backend/Dockerfile
+    environment:
+      # =======================================================
+      # CONFIGURACIÓN LOCAL (Activa por defecto)
+      # =======================================================
+      # DATABASE_URL: postgresql+asyncpg://app:app@db:5432/app
+      # ALLOW_ORIGINS: "http://localhost:4321,http://localhost:80"
+
+      # =======================================================
+      # CONFIGURACIÓN PARA PRODUCCIÓN (Vercel + Neon + Fly.io)
+      # Descomenta estas líneas SOLO para inicializar la DB remota o debug la conexión a la nube
+      # NOTA: Neon requiere '?sslmode=require' al final
+      # =======================================================
+      DATABASE_URL: postgresql+asyncpg://password@ep-aged-resonance-a43hroiu-pooler.us-east-1.aws.neon.tech/neondb?ssl=require
+      ALLOW_ORIGINS: "http://localhost:4321,http://localhost:80"
+    expose:
+      - "8000"
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: always
+    networks:
+      - app-network
+
+
+  frontend:
+    # Este servicio simula el build de producción localmente.
+    # No se usa para el despliegue real en Vercel (Vercel hace su propio build).
+    build:
+      context: . 
+      dockerfile: frontend/Dockerfile
+      target: production
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+    restart: always
+    networks:
+      - app-network
+
+volumes:
+  postgres_data:
+
+networks:
+  app-network:
+    driver: bridge

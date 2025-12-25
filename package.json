@@ -1,0 +1,42 @@
+{
+  "name": "@app/root",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Workspace root. Orchestration only.",
+  "packageManager": "pnpm@10.25.0",
+  "scripts": {
+    "dev:frontend": "pnpm -F @app/frontend dev",
+    "build:frontend": "pnpm -F @app/frontend build",
+    "lint": "pnpm -r lint",
+    "type-check": "pnpm -r type-check",
+    "backend:dev": "uv run --directory backend uvicorn app.main:app --reload",
+    "backend:lint": "uv run --directory backend ruff check .",
+    "test": "pnpm -r test",
+    "audit": "pnpm audit --prod",
+    "codegen": "pnpm -F @app/frontend orval",
+    "compose:up": "docker compose up -d",
+    "compose:down": "docker compose down"
+  },
+  "engines": {
+    "node": ">=24.1.0",
+    "pnpm": ">=10.25.0"
+  },
+  "devDependencies": {
+    "husky": "^9.0.11",
+    "lint-staged": "^15.2.2"
+  },
+  "pnpm": {
+    "peerDependencyRules": {
+      "allowAny": [],
+      "allowedVersions": {
+        "react": "19.x",
+        "react-dom": "19.x",
+        "eslint": "9.x"
+      }
+    },
+    "overrides": {
+      "glob": ">=10.5.0",
+      "mdast-util-to-hast": ">=13.2.1"
+    }
+  }
+}

@@ -1,0 +1,32 @@
+# Root build context (frontend & compose)
+.git
+.vscode
+node_modules
+**/node_modules
+frontend/.astro
+frontend/dist
+frontend/.next
+frontend/.turbo
+frontend/.tsbuildinfo
+frontend/coverage
+reports
+*.log
+**/.DS_Store
+**/.env
+**/.env.*
+**/__pycache__
+**/*.pyc
+.ruff_cache
+.pytest_cache
+
+# .dockerignore
+.venv
+.git
+.env
+__pycache__
+*.pyc
+
+# Ignorar dependencias locales
+node_modules
+dist
+.astro
