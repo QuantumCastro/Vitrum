@@ -75,13 +75,14 @@ export function NeuralSidebar({
     }
   };
 
-  const mobileStateClass = isSidebarOpen
-    ? "translate-y-0 opacity-100"
-    : "pointer-events-none translate-y-full opacity-0";
+  const mobileStateClass = "translate-y-0 opacity-100";
+  const positionClass = isMobile
+    ? "fixed left-0 top-0 bottom-0 w-[66vw]"
+    : "fixed inset-0";
 
   return (
     <div
-      className={`fixed inset-0 z-40 flex flex-col border-r border-slate-800/50 bg-slate-950/80 backdrop-blur-2xl transition-all duration-500 ease-out md:relative md:inset-auto md:shrink-0 md:bg-slate-900/30 md:shadow-[1px_0_0_rgba(255,255,255,0.03)] md:sticky md:top-0 md:h-screen md:transition-none ${
+      className={`${positionClass} z-40 flex flex-col border-r border-slate-800/50 bg-slate-950/80 backdrop-blur-2xl transition-all duration-500 ease-out md:relative md:inset-auto md:shrink-0 md:bg-slate-900/30 md:shadow-[1px_0_0_rgba(255,255,255,0.03)] md:sticky md:top-0 md:h-screen md:transition-none ${
         isMobile ? mobileStateClass : ""
       }`}
       style={!isMobile ? { width: desktopWidth } : undefined}
