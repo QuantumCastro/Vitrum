@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from collections.abc import Iterable
+from typing import Any, cast
 from uuid import UUID
 
 from fastapi import APIRouter, Depends, HTTPException, status
@@ -36,15 +37,20 @@ def _clean_links(
     return cleaned
 
 
+def _to_note_read(note: Note) -> NoteRead:
+    return NoteRead.model_validate(note)
+
+
 def _serialize_vault(vault: Vault) -> VaultWithNotes:
     sorted_notes = sorted(vault.notes, key=lambda n: n.updated_at, reverse=True)
+    serialized_notes = [_to_note_read(note) for note in sorted_notes]
     return VaultWithNotes(
         id=vault.id,
         name=vault.name,
         theme=vault.theme,
         created_at=vault.created_at,
         updated_at=vault.updated_at,
-        notes=sorted_notes,
+        notes=serialized_notes,
     )
 
 
@@ -53,25 +59,22 @@ async def _get_vault_or_404(
 ) -> Vault:
     query = select(Vault).where(Vault.id == vault_id, Vault.owner_id == user.id)
     if with_notes:
-        query = query.options(selectinload(Vault.notes))
+        query = query.options(selectinload(cast(Any, Vault.notes)))
 
     result = await session.execute(query)
-    vault = result.scalar_one_or_none()
-    if not vault:
+    vault = cast(Vault | None, result.scalar_one_or_none())
+    if vault is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Bóveda no encontrada")
     return vault
 
 
-async def _get_note_or_404(
-    session: SessionDep, vault_id: UUID, note_id: UUID, user: User
-) -> Note:
+async def _get_note_or_404(session: SessionDep, vault_id: UUID, note_id: UUID, user: User) -> Note:
+    await _get_vault_or_404(session, vault_id, user, with_notes=False)
     result = await session.execute(
-        select(Note)
-        .join(Vault, Vault.id == Note.vault_id)
-        .where(Note.id == note_id, Note.vault_id == vault_id, Vault.owner_id == user.id)
+        select(Note).where(Note.id == note_id, Note.vault_id == vault_id)
     )
-    note = result.scalar_one_or_none()
-    if not note:
+    note = cast(Note | None, result.scalar_one_or_none())
+    if note is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Nota no encontrada")
     return note
 
@@ -83,9 +86,9 @@ async def list_vaults(
     result = await session.execute(
         select(Vault)
         .where(Vault.owner_id == current_user.id)
-        .options(selectinload(Vault.notes))
+        .options(selectinload(cast(Any, Vault.notes)))
     )
-    vaults = result.scalars().unique().all()
+    vaults = cast(list[Vault], result.scalars().unique().all())
     return [_serialize_vault(vault) for vault in vaults]
 
 
@@ -151,10 +154,10 @@ async def list_notes(
     result = await session.execute(
         select(Note)
         .where(Note.vault_id == vault_id)
-        .order_by(Note.updated_at.desc(), Note.created_at.desc())
+        .order_by(cast(Any, Note.updated_at).desc(), cast(Any, Note.created_at).desc())
     )
-    notes = result.scalars().all()
-    return notes
+    notes = cast(list[Note], result.scalars().all())
+    return [_to_note_read(note) for note in notes]
 
 
 @router.post("/{vault_id}/notes", response_model=NoteRead, status_code=status.HTTP_201_CREATED)
@@ -183,7 +186,7 @@ async def create_note(
         await session.commit()
         await session.refresh(note)
 
-    return note
+    return _to_note_read(note)
 
 
 @router.patch("/{vault_id}/notes/{note_id}", response_model=NoteRead)
@@ -209,7 +212,7 @@ async def update_note(
     session.add(note)
     await session.commit()
     await session.refresh(note)
-    return note
+    return _to_note_read(note)
 
 
 @router.delete("/{vault_id}/notes/{note_id}", status_code=status.HTTP_204_NO_CONTENT)

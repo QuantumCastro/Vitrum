@@ -195,7 +195,9 @@ export function NeuralVaults({
                 </div>
                 <div
                   className={`absolute -bottom-4 -right-4 h-32 w-32 rounded-full blur-3xl transition-opacity duration-500 ${
-                    isActive ? "bg-violet-500/20 opacity-100" : "bg-slate-700/10 opacity-0 group-hover:opacity-100"
+                    isActive
+                      ? "bg-violet-500/20 opacity-100"
+                      : "bg-slate-700/10 opacity-0 group-hover:opacity-100"
                   }`}
                 />
               </div>

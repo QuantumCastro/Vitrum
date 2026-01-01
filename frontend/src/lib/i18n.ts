@@ -144,13 +144,11 @@ export const translations: Record<Locale, Copy> = {
     defaultNotes: {
       welcome: {
         title: "Bienvenido",
-        content:
-          "Tu boveda empieza aqui. Escribe una nota, enlazala y visualiza el grafo.",
+        content: "Tu boveda empieza aqui. Escribe una nota, enlazala y visualiza el grafo.",
       },
       quickstart: {
         title: "Guia rapida",
-        content:
-          "Usa el boton de enlaces. Luego abre el grafo para explorar.",
+        content: "Usa el boton de enlaces. Luego abre el grafo para explorar.",
       },
     },
     defaultVault: {
@@ -257,13 +255,11 @@ export const translations: Record<Locale, Copy> = {
     defaultNotes: {
       welcome: {
         title: "Welcome",
-        content:
-          "Your vault starts here. Write a note, link it, and visualize the graph.",
+        content: "Your vault starts here. Write a note, link it, and visualize the graph.",
       },
       quickstart: {
         title: "Quick start",
-        content:
-          "Use the link button, then open the graph to explore.",
+        content: "Use the link button, then open the graph to explore.",
       },
     },
     defaultVault: {

@@ -3,8 +3,9 @@ import Axios, { type AxiosRequestConfig, type AxiosResponse } from "axios";
 const resolveBaseUrl = (): string => {
   // 1. PRIORITY: Variable de entorno de Astro (Producción en Vercel)
   // Esta es la línea crítica que conecta con tu backend en Fly.io
-  if (import.meta.env.PUBLIC_API_URL) {
-    return import.meta.env.PUBLIC_API_URL;
+  const envUrl = import.meta.env.PUBLIC_API_URL as unknown;
+  if (typeof envUrl === "string" && envUrl.trim() !== "") {
+    return envUrl;
   }
 
   // 2. Runtime injection (opcional, mantengo tu código original)

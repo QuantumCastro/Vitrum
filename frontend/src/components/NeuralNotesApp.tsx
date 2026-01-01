@@ -16,6 +16,7 @@ import {
   useUpdateVaultApiVaultsVaultIdPatch,
 } from "../api/generated/vaults/vaults";
 import type { NoteRead, VaultWithNotes } from "../api/model";
+import { useServerWarmup } from "../hooks/useServerWarmup";
 import type { Copy, Locale } from "../lib/i18n";
 import { detectLocale, resolveI18nValue, translations } from "../lib/i18n";
 import { NeuralAbout } from "./neural/NeuralAbout";
@@ -51,6 +52,8 @@ function NeuralNotesShell() {
   const [newVaultName, setNewVaultName] = useState<string>("");
   const [theme, setTheme] = useState<"light" | "dark">("dark");
   const [locale, setLocale] = useState<Locale>("es");
+
+  useServerWarmup();
 
   const queryClient = useQueryClient();
   const vaultsKey = getListVaultsApiVaultsGetQueryKey();
@@ -194,7 +197,11 @@ function NeuralNotesShell() {
     });
   };
 
-  const updateNoteCache = (noteId: string, vaultId: string, updater: (note: NoteRead) => NoteRead) =>
+  const updateNoteCache = (
+    noteId: string,
+    vaultId: string,
+    updater: (note: NoteRead) => NoteRead,
+  ) =>
     updateVaultCache((prev) =>
       prev.map((vault) => {
         if (vault.id !== vaultId) return vault;
@@ -307,7 +314,8 @@ function NeuralNotesShell() {
     if (!relativePath) return titleFromFilename(filename);
     const normalized = relativePath.replace(/\\/g, "/");
     const segments = normalized.split("/").filter(Boolean);
-    const withoutRoot = segments.length > 1 ? segments.slice(1).join("/") : segments[0] ?? filename;
+    const withoutRoot =
+      segments.length > 1 ? segments.slice(1).join("/") : (segments[0] ?? filename);
     return stripMdExtension(withoutRoot);
   };
 
@@ -512,7 +520,7 @@ function NeuralNotesShell() {
         mode={authMode}
         setMode={setAuthMode}
         form={authForm}
-        setForm={(partial) => setAuthForm((prev) => ({ ...prev, ...partial }))} 
+        setForm={(partial) => setAuthForm((prev) => ({ ...prev, ...partial }))}
         onSubmit={handleAuthSubmit}
         error={authError}
         isLoading={loginMutation.isPending || registerMutation.isPending}
@@ -593,23 +601,23 @@ function NeuralNotesShell() {
           </div>
 
           <NeuralVaults
-          currentView={currentView}
-          vaults={resolvedVaults}
-          activeVaultId={activeVaultId}
-          newVaultName={newVaultName}
-          onSelectVault={(vaultId) => {
-            setActiveVaultId(vaultId);
-            const selected = vaults.find((vault) => vault.id === vaultId);
-            const selectedNotes = selected?.notes ?? [];
-            setActiveNoteId(selectedNotes[0]?.id ?? null);
-            setCurrentView("editor");
-          }}
-          onCreateVault={handleCreateVault}
-          onImportVault={handleImportVault}
-          onChangeNewVaultName={setNewVaultName}
-          onRenameVault={handleRenameVault}
-          t={t}
-        />
+            currentView={currentView}
+            vaults={resolvedVaults}
+            activeVaultId={activeVaultId}
+            newVaultName={newVaultName}
+            onSelectVault={(vaultId) => {
+              setActiveVaultId(vaultId);
+              const selected = vaults.find((vault) => vault.id === vaultId);
+              const selectedNotes = selected?.notes ?? [];
+              setActiveNoteId(selectedNotes[0]?.id ?? null);
+              setCurrentView("editor");
+            }}
+            onCreateVault={handleCreateVault}
+            onImportVault={handleImportVault}
+            onChangeNewVaultName={setNewVaultName}
+            onRenameVault={handleRenameVault}
+            t={t}
+          />
 
           <NeuralAbout currentView={currentView} onClose={() => setCurrentView("editor")} t={t} />
         </div>

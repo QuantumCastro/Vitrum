@@ -17,9 +17,7 @@ type StackItemProps = {
 function StackItem({ title, body }: StackItemProps) {
   return (
     <div className="min-w-0 space-y-1">
-      <p className="text-[10px] font-bold uppercase tracking-widest text-slate-500">
-        {title}
-      </p>
+      <p className="text-[10px] font-bold uppercase tracking-widest text-slate-500">{title}</p>
       <p className="text-xs leading-relaxed text-slate-400">{body}</p>
     </div>
   );
@@ -42,12 +40,10 @@ export function NeuralAbout({ currentView, onClose, t }: Props) {
             <div className="mb-6 flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-violet-500 to-fuchsia-600 shadow-lg shadow-fuchsia-500/20">
               <Network className="text-white" size={24} />
             </div>
-            <h2 className="text-2xl font-bold text-white tracking-tight">
+            <h2 className="text-2xl font-bold tracking-tight text-white">
               {t.about.headline} <span className="text-fuchsia-500">.pro</span>
             </h2>
-            <p className="mt-2 text-sm leading-relaxed text-slate-400">
-              {t.about.subline}
-            </p>
+            <p className="mt-2 text-sm leading-relaxed text-slate-400">{t.about.subline}</p>
           </div>
 
           <div className="custom-scrollbar mt-6 min-h-0 flex-1 overflow-y-auto pr-1">
@@ -71,18 +67,9 @@ export function NeuralAbout({ currentView, onClose, t }: Props) {
                   {t.about.stackTitle}
                 </p>
                 <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                  <StackItem
-                    title={t.about.languagesTitle}
-                    body={t.about.languagesBody}
-                  />
-                  <StackItem
-                    title={t.about.frameworksTitle}
-                    body={t.about.frameworksBody}
-                  />
-                  <StackItem
-                    title={t.about.librariesTitle}
-                    body={t.about.librariesBody}
-                  />
+                  <StackItem title={t.about.languagesTitle} body={t.about.languagesBody} />
+                  <StackItem title={t.about.frameworksTitle} body={t.about.frameworksBody} />
+                  <StackItem title={t.about.librariesTitle} body={t.about.librariesBody} />
                   <StackItem title={t.about.toolsTitle} body={t.about.toolsBody} />
                 </div>
               </section>

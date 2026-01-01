@@ -15,6 +15,10 @@ DEFAULT_NOTE_QUICKSTART_TITLE_KEY = "i18n:defaultNotes.quickstart.title"
 DEFAULT_NOTE_QUICKSTART_CONTENT_KEY = "i18n:defaultNotes.quickstart.content"
 
 
+def _to_user_read(user: User) -> UserRead:
+    return UserRead.model_validate(user)
+
+
 def _ensure_password_len(password: str) -> None:
     """Valida límite de bcrypt para evitar 500 por contraseñas largas."""
     if len(password.encode("utf-8")) > MAX_BCRYPT_BYTES:
@@ -28,9 +32,7 @@ def _ensure_password_len(password: str) -> None:
 
 
 async def _ensure_default_vault(session: SessionDep, user: User) -> None:
-    result = await session.execute(
-        select(Vault.id).where(Vault.owner_id == user.id).limit(1)
-    )
+    result = await session.execute(select(Vault.id).where(Vault.owner_id == user.id).limit(1))
     if result.scalar_one_or_none():
         return
 
@@ -79,7 +81,7 @@ async def register(payload: RegisterRequest, session: SessionDep) -> TokenRespon
 
     await _ensure_default_vault(session, user)
     token = create_access_token(str(user.id))
-    return TokenResponse(access_token=token, token_type="bearer", user=user)
+    return TokenResponse(access_token=token, token_type="bearer", user=_to_user_read(user))
 
 
 @router.post("/login", response_model=TokenResponse)
@@ -97,9 +99,9 @@ async def login(payload: LoginRequest, session: SessionDep) -> TokenResponse:
 
     await _ensure_default_vault(session, user)
     token = create_access_token(str(user.id))
-    return TokenResponse(access_token=token, token_type="bearer", user=user)
+    return TokenResponse(access_token=token, token_type="bearer", user=_to_user_read(user))
 
 
 @router.get("/me", response_model=UserRead)
 async def read_me(current_user: User = Depends(get_current_user)) -> UserRead:
-    return current_user
+    return _to_user_read(current_user)

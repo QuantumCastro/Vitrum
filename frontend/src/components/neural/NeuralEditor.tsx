@@ -107,7 +107,8 @@ export function NeuralEditor({
                         {notes
                           .filter(
                             (note) =>
-                              note.id !== activeNote.id && !(activeNote.links ?? []).includes(note.id),
+                              note.id !== activeNote.id &&
+                              !(activeNote.links ?? []).includes(note.id),
                           )
                           .map((note) => (
                             <button
@@ -122,9 +123,13 @@ export function NeuralEditor({
                             </button>
                           ))}
                         {notes.filter(
-                          (note) => note.id !== activeNote.id && !(activeNote.links ?? []).includes(note.id),
+                          (note) =>
+                            note.id !== activeNote.id &&
+                            !(activeNote.links ?? []).includes(note.id),
                         ).length === 0 ? (
-                          <p className="px-3 py-2 text-xs text-slate-500">{t.editor.noNotesAvailable}</p>
+                          <p className="px-3 py-2 text-xs text-slate-500">
+                            {t.editor.noNotesAvailable}
+                          </p>
                         ) : null}
                       </div>
                     </div>

@@ -16,7 +16,6 @@ lint:
 
 format:
   pnpm --dir frontend format
-  pnpm --dir frontend format:fix
 
 type:
   pnpm --dir frontend type-check

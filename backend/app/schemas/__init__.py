@@ -1,9 +1,11 @@
 from app.schemas.auth import LoginRequest, RegisterRequest, TokenPayload, TokenResponse
+from app.schemas.health import HealthStatus
 from app.schemas.notes import NoteBase, NoteCreate, NoteRead, NoteUpdate
 from app.schemas.users import UserRead
 from app.schemas.vaults import VaultCreate, VaultRead, VaultUpdate, VaultWithNotes
 
 __all__ = [
+    "HealthStatus",
     "LoginRequest",
     "NoteBase",
     "NoteCreate",

@@ -31,7 +31,9 @@ export function NeuralAuthOverlay({
       <div className="relative w-full max-w-md rounded-3xl border border-white/10 bg-slate-900/60 p-8 shadow-2xl shadow-black/50 backdrop-blur-xl">
         <div className="mb-8 flex items-center justify-between">
           <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-500">{t.brand}</p>
+            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-500">
+              {t.brand}
+            </p>
             <h1 className="text-2xl font-bold text-white">{t.auth.title}</h1>
           </div>
           <div className="flex gap-2 rounded-full bg-white/5 p-1">
@@ -67,7 +69,9 @@ export function NeuralAuthOverlay({
             </div>
           </label>
           <label className="space-y-2 text-sm text-slate-300">
-            <span className="text-xs uppercase tracking-wide text-slate-500">{t.auth.password}</span>
+            <span className="text-xs uppercase tracking-wide text-slate-500">
+              {t.auth.password}
+            </span>
             <div className="rounded-xl border border-slate-800 bg-slate-900/60 px-4 py-3 focus-within:border-violet-400/50">
               <input
                 type="password"
@@ -80,7 +84,9 @@ export function NeuralAuthOverlay({
           </label>
           {mode === "register" && (
             <label className="space-y-2 text-sm text-slate-300">
-              <span className="text-xs uppercase tracking-wide text-slate-500">{t.auth.displayName}</span>
+              <span className="text-xs uppercase tracking-wide text-slate-500">
+                {t.auth.displayName}
+              </span>
               <div className="rounded-xl border border-slate-800 bg-slate-900/60 px-4 py-3 focus-within:border-violet-400/50">
                 <input
                   type="text"

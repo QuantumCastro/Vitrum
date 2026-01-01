@@ -19,16 +19,13 @@ type Props = {
 
 export function NeuralGraph({ notes, onNodeClick, isActive }: Props) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
-  const dragNodeRef = useRef<
-    | {
-        id: string;
-        x: number;
-        y: number;
-        vx: number;
-        vy: number;
-      }
-    | null
-  >(null);
+  const dragNodeRef = useRef<{
+    id: string;
+    x: number;
+    y: number;
+    vx: number;
+    vy: number;
+  } | null>(null);
 
   const data = useMemo(() => {
     const width = typeof window !== "undefined" ? window.innerWidth : 300;

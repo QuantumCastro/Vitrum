@@ -76,7 +76,12 @@
 
 body {
   margin: 0;
-  font-family: "Inter", "Space Grotesk", system-ui, -apple-system, sans-serif;
+  font-family:
+    "Inter",
+    "Space Grotesk",
+    system-ui,
+    -apple-system,
+    sans-serif;
   background-color: var(--c-950);
   color: var(--text-100);
 }

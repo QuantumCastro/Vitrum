@@ -98,7 +98,7 @@ export function NeuralTopBar({
           <Menu size={16} />
           <span className="hidden sm:inline">{t.sidebar.toggle}</span>
         </button>
-        <div className="flex items-center gap-2 text-xs font-mono text-slate-500">
+        <div className="flex items-center gap-2 font-mono text-xs text-slate-500">
           <span className="opacity-50">/</span>
           <span className="uppercase tracking-wider">{viewLabel}</span>
         </div>

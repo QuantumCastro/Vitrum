@@ -1,4 +1,5 @@
 import logging
+from collections.abc import AsyncIterator
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
@@ -12,7 +13,7 @@ logger = logging.getLogger(__name__)
 
 
 @asynccontextmanager
-async def lifespan(app: FastAPI):
+async def lifespan(app: FastAPI) -> AsyncIterator[None]:
     await init_db()
     yield
 
@@ -27,17 +28,22 @@ def create_app() -> FastAPI:
         lifespan=lifespan,
     )
 
-    cors_kwargs = {
-        "allow_credentials": True,
-        "allow_methods": ["*"],
-        "allow_headers": ["*"],
-    }
     if settings.cors_allow_all:
-        cors_kwargs["allow_origin_regex"] = ".*"
+        app.add_middleware(
+            CORSMiddleware,
+            allow_origin_regex=".*",
+            allow_credentials=True,
+            allow_methods=["*"],
+            allow_headers=["*"],
+        )
     else:
-        cors_kwargs["allow_origins"] = settings.cors_origins_list
-
-    app.add_middleware(CORSMiddleware, **cors_kwargs)
+        app.add_middleware(
+            CORSMiddleware,
+            allow_origins=settings.cors_origins_list,
+            allow_credentials=True,
+            allow_methods=["*"],
+            allow_headers=["*"],
+        )
 
     @app.get("/health", tags=["health"])
     async def root_health() -> dict[str, str]:

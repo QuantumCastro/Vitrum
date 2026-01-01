@@ -9,30 +9,28 @@ import { fileURLToPath } from "node:url";
 const astroRecommended = astroPlugin.configs["flat/recommended"];
 const tsconfigRootDir = fileURLToPath(new URL("./", import.meta.url));
 
-const tsConfigs = tseslint.configs["flat/recommended-type-checked"].map(
-  (config) => ({
-    ...config,
-    files: ["src/**/*.{ts,tsx,js,jsx}"],
-    languageOptions: {
-      ...config.languageOptions,
-      parser: tsParser,
-      parserOptions: {
-        ...(config.languageOptions?.parserOptions ?? {}),
-        project: "./tsconfig.json",
-        tsconfigRootDir,
-        ecmaVersion: "latest",
-        sourceType: "module",
-        ecmaFeatures: {
-          jsx: true,
-        },
-      },
-      globals: {
-        ...(config.languageOptions?.globals ?? {}),
-        ...globals.browser,
+const tsConfigs = tseslint.configs["flat/recommended-type-checked"].map((config) => ({
+  ...config,
+  files: ["src/**/*.{ts,tsx,js,jsx}"],
+  languageOptions: {
+    ...config.languageOptions,
+    parser: tsParser,
+    parserOptions: {
+      ...(config.languageOptions?.parserOptions ?? {}),
+      project: "./tsconfig.json",
+      tsconfigRootDir,
+      ecmaVersion: "latest",
+      sourceType: "module",
+      ecmaFeatures: {
+        jsx: true,
       },
     },
-  }),
-);
+    globals: {
+      ...(config.languageOptions?.globals ?? {}),
+      ...globals.browser,
+    },
+  },
+}));
 
 const reactConfig = {
   files: ["src/**/*.{tsx,jsx}"],

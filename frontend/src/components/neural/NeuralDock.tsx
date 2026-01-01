@@ -10,12 +10,7 @@ type Props = {
   t: Copy;
 };
 
-export function NeuralDock({
-  currentView,
-  isSidebarOpen,
-  onSetView,
-  t,
-}: Props) {
+export function NeuralDock({ currentView, isSidebarOpen, onSetView, t }: Props) {
   return (
     <div className="pointer-events-none absolute bottom-8 left-0 right-0 z-50 flex justify-center px-4 md:px-0">
       <div className="pointer-events-auto flex items-center gap-1 rounded-2xl border border-white/10 bg-slate-900/70 p-1.5 shadow-2xl shadow-black/50 ring-1 ring-white/5 backdrop-blur-xl">
